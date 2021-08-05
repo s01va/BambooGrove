@@ -3,6 +3,7 @@ const router = express.Router();
 const maria = require('../../db');
 
 router.get('/', function(req, res, next) {
+    console.log("bamboodburl:", process.env.BAMBOODBURL);
     maria.query('select * from post', function(err, rows, fields) {
         if (!err) {
             res.send(rows);
