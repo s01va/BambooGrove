@@ -1,8 +1,10 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const flash = require('connect-flash')
+const session = require('express-session')
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 let indexRouter = require('./routes/index');
 let postsRouter = require('./routes/posts');
@@ -13,9 +15,15 @@ let app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(flash());
+app.use(session({
+  secret:process.env.Nodejs_sessionSecret,
+  resave:true,
+  saveUninitialized:true
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

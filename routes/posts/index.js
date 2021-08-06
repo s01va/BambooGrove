@@ -11,4 +11,10 @@ router.get('/', function(req, res, next) {
     })
 });
 
+router.get('/new', function(req, res) {
+    let post = req.flash('post')[0] || {};
+    let errors = req.flash('errors')[0] || {};
+    res.render('posts/new', {post:post, errors:errors});
+});
+
 module.exports = router;
