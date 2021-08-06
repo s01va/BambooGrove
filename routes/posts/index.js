@@ -4,12 +4,10 @@ const maria = require('../../db');
 
 router.get('/', function(req, res, next) {
     maria.query('select * from post', function(err, rows, fields) {
-        if (!err) {
-            res.send(rows);
-        } else {
-            console.log('err:', err);
-            res.send(err);
+        if (err) {
+            return res.json(err);
         }
+        res.render('posts/index', {posts:rows})
     })
 });
 
