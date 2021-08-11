@@ -3,6 +3,8 @@ const router = express.Router();
 const maria = require('../../db');
 const Post = require('../../model/Post');
 
+// Board page
+// select * posts
 router.get('/', function(req, res, next) {
     let select_post_sql = 'select * from post'
     maria.query(select_post_sql, function(err, rows, fields) {
@@ -13,6 +15,7 @@ router.get('/', function(req, res, next) {
     })
 });
 
+// Create post
 router.get('/new', function(req, res) {
     let post = req.flash('post')[0] || {};
     let errors = req.flash('errors')[0] || {};
@@ -21,14 +24,13 @@ router.get('/new', function(req, res) {
 
 router.post('/', function(req, res) {
     let data = req.body;
-    let insert_post_sql = "insert into post(title, body, author, createdAt) value (?, ?, ?, ?);";
+    let insert_post_sql = "insert into post(title, body, author) value (?, ?, ?);";
     let post_params = [];
 
     post_params.push(data.title);
     post_params.push(data.body);
     //post_params.push(data.author);
     post_params.push("admin");
-    post_params.push(data.createdAt);
 
     //Post.insertPost()
     maria.query(insert_post_sql, post_params, function(err, post) {
@@ -40,6 +42,9 @@ router.post('/', function(req, res) {
     });
 })
 
+// ====================================================================
+
+// show specific post
 router.get('/:postid', function(req, res) {
     let postid = req.params.postid;
     let show_sql = `select * from post where seq=${postid};`;
@@ -49,7 +54,36 @@ router.get('/:postid', function(req, res) {
         }
         res.render('posts/show', {post:post[0]});
     })
+})
 
+// Edit 
+router.get('/:postid/edit', function(req, res) {
+    let postid = req.params.postid;
+    let post = req.flash('post');
+    let errors = req.flash('errors')[0] || {};
+    if (!post) {
+        if (err) {
+            return res.json(err);
+        } else {
+            res.render('posts/edit', {post:post, errors:errors});
+        }
+    }
+})
+
+router.put('/:postid', function(req, res) {
+    req.body.updatedAt = Date.now();
+});
+
+//delete
+router.get('/:postid/delete', function(req, res) {
+    let postid = req.params.postid;
+    let delete_post_sql = `delete from post where seq=${postid};`;
+    maria.query(delete_post_sql, function(err) {
+        if (err) {
+            return res.json(err);
+        }
+        res.redirect('/posts');
+    });
 })
 
 module.exports = router;
