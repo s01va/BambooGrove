@@ -1,4 +1,4 @@
-class insertPost {
+class Post {
     constructor(data) {
         this.title = data.title;
         this.body = data.body;

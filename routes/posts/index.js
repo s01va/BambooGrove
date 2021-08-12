@@ -36,7 +36,8 @@ router.post('/', function(req, res) {
     maria.query(insert_post_sql, post_params, function(err, post) {
         if (err) {
             req.flash('post', req.body);
-            req.flash('errors', util.parseError(err))
+            req.flash('errors', err)
+            //req.flash('errors', util.parseError(err))
         }
         res.redirect('/posts');
     });
@@ -51,7 +52,9 @@ router.get('/:postid', function(req, res) {
     maria.query(show_sql, function(err, post, field) {
         if (err) {
             return res.json(err);
+            req.flash('errors', util.parseError(err));
         }
+        req.flash('post', post[0]);
         res.render('posts/show', {post:post[0]});
     })
 })
@@ -60,7 +63,6 @@ router.get('/:postid', function(req, res) {
 router.get('/:postid/edit', function(req, res) {
     let postid = req.params.postid;
     let post = req.flash('post');
-    console.log(post);
     let errors = req.flash('errors')[0] || {};
     if (!post) {
         if (err) {
@@ -68,10 +70,13 @@ router.get('/:postid/edit', function(req, res) {
         } else {
             res.render('posts/edit', {post:post, errors:errors});
         }
+    } else {
+        console.log(post[0].title);
+        res.render('posts/edit', {post:post[0], errors:errors});
     }
 })
 
-router.post('/:postid', function(req, res) {
+router.put('/:postid', function(req, res) {
     req.body.updatedAt = Date.now();
 });
 
