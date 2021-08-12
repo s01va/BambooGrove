@@ -60,6 +60,7 @@ router.get('/:postid', function(req, res) {
 router.get('/:postid/edit', function(req, res) {
     let postid = req.params.postid;
     let post = req.flash('post');
+    console.log(post);
     let errors = req.flash('errors')[0] || {};
     if (!post) {
         if (err) {
@@ -70,7 +71,7 @@ router.get('/:postid/edit', function(req, res) {
     }
 })
 
-router.put('/:postid', function(req, res) {
+router.post('/:postid', function(req, res) {
     req.body.updatedAt = Date.now();
 });
 
@@ -82,6 +83,7 @@ router.get('/:postid/delete', function(req, res) {
         if (err) {
             return res.json(err);
         }
+        console.log("hello")
         res.redirect('/posts');
     });
 })
