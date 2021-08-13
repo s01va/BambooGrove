@@ -59,6 +59,8 @@ router.get('/:postid', function(req, res) {
     })
 })
 
+// ====================================================================
+
 // Edit 
 router.get('/:postid/edit', function(req, res) {
     let postid = req.params.postid;
@@ -67,20 +69,29 @@ router.get('/:postid/edit', function(req, res) {
     if (!post) {
         if (err) {
             return res.json(err);
-        } else {
-            res.render('posts/edit', {post:post, errors:errors});
         }
-    } else {
-        console.log(post[0].title);
-        res.render('posts/edit', {post:post[0], errors:errors});
     }
+    res.render('posts/edit', {post:post[0], errors:errors});
 })
 
-router.put('/:postid', function(req, res) {
-    req.body.updatedAt = Date.now();
+router.post('/:postid', function(req, res) {
+    let postid = req.params.postid;
+    let newdata = req.body;
+    console.log(newdata);
+    
+    let update_post_sql = `update post set title="${newdata.title}", body="${newdata.body}", updatedAt=current_time() where seq=${postid}`
+
+    maria.query(update_post_sql, function(err, post, field) {
+        if (err) {
+            return res.json(err);
+        }
+        res.redirect("/posts/" + postid);
+    })
 });
 
-//delete
+// ====================================================================
+
+//delete        
 router.get('/:postid/delete', function(req, res) {
     let postid = req.params.postid;
     let delete_post_sql = `delete from post where seq=${postid};`;
