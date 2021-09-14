@@ -6,7 +6,7 @@ const Post = require('../../model/Post');
 // Board page
 // select * posts
 router.get('/', function(req, res, next) {
-    let select_post_sql = 'select * from post'
+    let select_post_sql = 'select * from post order by createdAt desc;'
     maria.query(select_post_sql, function(err, rows, fields) {
         if (err) {
             return res.json(err);
