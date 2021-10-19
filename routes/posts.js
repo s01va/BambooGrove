@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const maria = require('../../db');
-const Post = require('../../model/Post');
+const maria = require('../db');
+//const Post = require('../../model/Post');
 
 // Board page
 // select * posts
