@@ -15,10 +15,10 @@
       <form action="/users" method="post">
 
         <div class="form-group row">
-          <label for="username" class="col-sm-3 col-form-label">Username*</label>
+          <label for="username" class="col-sm-3 col-form-label">User ID*</label>
           <div class="col-sm-9">
-            <input type="text" id="username" name="username" value="" placeholder="User name" class="form-control <%= (errors.username)?'is-invalid':'' %>">
-            <% if(errors.username){ %> <!-- 3 -->
+            <input type="text" id="userid" name="userid" value="" placeholder="User ID" class="form-control <%= (errors.username)?'is-invalid':'' %>">
+            <% if(errors.userid){ %> <!-- 3 -->
               <span class="invalid-feedback"><%= errors.username.message %></span>
             <% } %>
           </div>

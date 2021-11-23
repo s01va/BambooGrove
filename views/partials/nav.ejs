@@ -14,7 +14,7 @@
       </ul>
       <ul class="navbar-nav ms-auto">
         <% if (isAuthenticated) { %>
-          <li class="nav-item"><a href="/users/<%= currentUser.username %>" class="nav-link">My Account</a></li>
+          <li class="nav-item"><a href="/users/<%= currentUser.id %>" class="nav-link">My Account</a></li>
           <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
         <% } else { %>
           <li class="nav-item"><a href="/users/new" class="nav-link">Sign Up</a></li>
