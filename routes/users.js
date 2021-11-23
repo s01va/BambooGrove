@@ -1,10 +1,8 @@
 let express = require('express');
 let router = express.Router();
-//let User = require('../models/user');
 const models = require('../models');
 
 router.get('/', function(req, res) {
-    //res.render('users/index', {user:req.user});
     console.log("req" + req);
     id = req.user.id;
     result = models.user.findOne({where: {id: id}})
@@ -38,15 +36,8 @@ router.get('/:id', function(req, res) {
     models.user.findOne({
         where: {id: req.params.id}
     }).then((userdata) => {
-        //console.log("userdata: ", userdata.dataValues);
         res.render('users/show', {user:userdata});
     });
-    /*
-    models.user.findOne({username:req.params.username}, function (err, user) {
-        if(err) return res.json(err);
-        res.render('users/show', {user:userdata});
-    });
-    */
 });
 
 module.exports = router;
